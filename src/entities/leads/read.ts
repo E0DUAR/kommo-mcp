@@ -575,7 +575,7 @@ export async function getLeadCustomFieldsMetadata(
 
     return {
       success: true,
-      fields: fields.filter(f => f.enums !== null && Array.isArray(f.enums) && f.enums.length > 0), // Filter out fields without enums (they're not select fields)
+      fields: fields.filter(f => (f as any).enums && Array.isArray((f as any).enums) && (f as any).enums.length > 0) as any, // Filter out fields without enums
     };
 
   } catch (error) {

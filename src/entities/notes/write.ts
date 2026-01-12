@@ -16,6 +16,15 @@ import {
   type UpdateNoteData,
 } from './types.js';
 
+export { 
+  kommoNoteSchema, 
+  type KommoNote,
+  createNoteDataSchema,
+  type CreateNoteData,
+  updateNoteDataSchema,
+  type UpdateNoteData,
+};
+
 /**
  * Result of a create/update note operation.
  */

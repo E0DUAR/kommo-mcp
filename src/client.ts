@@ -11,6 +11,7 @@
 
 import { kommoConfigSchema, type KommoConfig } from './types.js';
 
+export { kommoConfigSchema, type KommoConfig };
 /**
  * Options for making API requests.
  */

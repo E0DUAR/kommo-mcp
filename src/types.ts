@@ -38,6 +38,18 @@ export type KommoConfig = z.infer<typeof kommoConfigSchema>;
 // Re-export Entity Types (for backward compatibility)
 // ============================================
 
+import {
+  type KommoContact,
+  type CustomFieldValue,
+  type SearchContactByPhoneParams,
+  type SearchContactByEmailParams,
+  type GetContactParams,
+  type ListContactsFilters,
+  type SearchContactResult,
+  type GetContactResult,
+  type ListContactsResult,
+} from './entities/contacts/types.js';
+
 export type {
   KommoContact,
   CustomFieldValue,
@@ -51,7 +63,7 @@ export type {
 } from './entities/contacts/types.js';
 
 // Legacy type aliases for backward compatibility
-export type SearchContactParams = SearchContactByPhoneParams;
+export type SearchContactParams = any;
 export { searchContactByPhoneParamsSchema as searchContactParamsSchema } from './entities/contacts/types.js';
 export { getContactParamsSchema } from './entities/contacts/types.js';
 export { kommoContactSchema, customFieldValueSchema } from './entities/contacts/types.js';

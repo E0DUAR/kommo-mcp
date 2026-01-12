@@ -15,6 +15,7 @@
 // ============================================
 
 export { kommoConfigSchema, type KommoConfig } from './types.js';
+export { getKommoConfig } from './server/config.js';
 export type { KommoContact, SearchContactParams, GetContactParams, SearchContactResult, GetContactResult } from './types.js';
 export { 
   SEARCH_CONTACT_TOOL_DESCRIPTION, 
@@ -249,10 +250,13 @@ export {
 } from './entities/notes/write.js';
 
 export type {
-  CreateNoteData,
-  UpdateNoteData,
   NoteWriteResult,
 } from './entities/notes/write.js';
+
+export type {
+  CreateNoteData,
+  UpdateNoteData,
+} from './entities/notes/types.js';
 
 // ============================================
 // Legacy Compatibility

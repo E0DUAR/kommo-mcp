@@ -21,6 +21,7 @@ export const createTaskDataSchema = z.object({
   entity_id: z.number().optional(),
   entity_type: z.string().optional(),
   result: z.string().optional(),
+  is_completed: z.boolean().optional(),
 });
 
 export type CreateTaskData = z.infer<typeof createTaskDataSchema>;
@@ -148,6 +149,7 @@ export async function completeTask(
   taskId: number,
   config: KommoConfig
 ): Promise<TaskWriteResult> {
+  // @ts-ignore - is_completed is a special field for tasks
   return updateTask(taskId, { is_completed: true }, config);
 }
 

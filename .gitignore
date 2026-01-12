@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+.DS_Store
+docs/COMPREHENSIVE_MIGRATION_PLAN.md
+docs/SEPARATION_PLAN.md
+test-macro.ts
+test-mcp.js
+coverage
+.npmrc
