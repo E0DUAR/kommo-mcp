@@ -160,4 +160,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Built with ❤️ by [Syncra Engine](https://github.com/syncraengine)
+Built with ❤️ by [Eduardo Mendez](https://github.com/E0DUAR/kommo-mcp)
