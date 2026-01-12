@@ -1,0 +1,75 @@
+{
+  "name": "@syncraengine/kommo-mcp",
+  "version": "0.1.0",
+  "description": "Kommo CRM MCP - Model Context Protocol server and JavaScript/TypeScript SDK for Kommo CRM API v4",
+  "license": "MIT",
+  "author": "Syncra Engine",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "kommo-mcp-server": "./dist/bin/mcp-server.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "import": "./dist/server/index.js",
+      "require": "./dist/server/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/E0DUAR/kommo-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/E0DUAR/kommo-mcp/issues"
+  },
+  "homepage": "https://github.com/E0DUAR/kommo-mcp#readme",
+  "keywords": [
+    "kommo",
+    "amocrm",
+    "crm",
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "chatgpt",
+    "ai",
+    "sdk",
+    "typescript"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc && tsc --build tsconfig.cjs.json",
+    "dev": "tsx watch src/bin/mcp-server.ts",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
