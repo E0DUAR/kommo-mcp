@@ -18,10 +18,10 @@ node_modules/
 
 # Testing
 coverage/
-test-macro.ts
-test-mcp.js
-*.test.ts
-*.spec.ts
+
+# Development scripts
+src/scripts/
+dist/**/scripts/
 
 # Logs
 npm-debug.log*
@@ -34,6 +34,8 @@ Thumbs.db
 
 # Documentation not for end-users
 docs/COMPREHENSIVE_MIGRATION_PLAN.md
+docs/ROADMAP.md
+docs/STATUS.md
 docs/HANDOFF_TO_NEW_IA.md
 docs/MIGRATION_PROGRESS.md
 docs/MIGRATION_STEP_BY_STEP.md
@@ -41,3 +43,4 @@ docs/SEPARATION_PLAN.md
 
 # NPM Configuration
 .npmrc
+docs/aboutMCP.md

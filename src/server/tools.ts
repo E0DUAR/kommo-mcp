@@ -110,6 +110,7 @@ export function registerKommoTools(server: Server): void {
               name: { type: 'string' },
               price: { type: 'number' },
               status_id: { type: 'number' },
+              pipeline_id: { type: 'number' },
             },
             required: ['leadId'],
           },
@@ -288,7 +289,7 @@ export function registerKommoTools(server: Server): void {
         },
         {
           name: 'kommo_get_pipeline_statuses',
-          description: 'Get all statuses (stages) for a specific pipeline',
+          description: 'Get all statuses (stages) for a specific pipeline. IMPORTANT: Use this to find a valid status_id before moving a lead to a different pipeline.',
           inputSchema: {
             type: 'object',
             properties: {
@@ -416,6 +417,7 @@ export function registerKommoTools(server: Server): void {
               name: { type: 'string' },
               price: { type: 'number' },
               status_id: { type: 'number' },
+              pipeline_id: { type: 'number' },
             },
             required: ['dealId'],
           },

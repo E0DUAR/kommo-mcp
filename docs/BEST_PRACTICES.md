@@ -90,6 +90,38 @@ All linking functions (`linkLeadToContact`, `linkContactToCompany`, etc.) verify
 
 ---
 
+## 🧠 MCP Prompt Engineering
+
+When using this tool with an AI assistant (like Claude), use these patterns for best results.
+
+### Complex Workflows
+
+Instead of asking for single actions, describe the goal and let the AI chain the tools.
+
+**Example Prompt:**
+> "Find the contact with email 'alice@example.com'. If she exists, create a new deal for her called 'Enterprise License' in the 'Sales' pipeline with a value of 5000. Also add a note to the deal saying 'Customer interested in Q3 deployment'."
+
+**The AI will:**
+1. Call `kommo_search_contact` to find the ID.
+2. Call `kommo_create_deal` using the contact ID in `_embedded`.
+3. Call `kommo_create_note` using the new deal ID.
+
+### Context Retrieval
+
+Before making updates, ask the AI to fetch the current state.
+
+**Example Prompt:**
+> "Get the details for Deal #12345, including its associated contacts. Then, update the deal status to 'Negotiation' and add a task for the primary contact to 'Follow up on contract'.
+
+### Data Formatting
+
+The AI is aware of the schemas. You can provide unstructured data and it will map it correctly.
+
+**Example Prompt:**
+> "Create a new lead for 'TechCorp'. It's a hot lead, value around 10k. The contact person is John Doe (john@techcorp.com, +15550199)."
+
+---
+
 ## Pagination
 
 ### Use Pagination for Large Datasets

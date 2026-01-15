@@ -8,3 +8,7 @@ test-macro.ts
 test-mcp.js
 coverage
 .npmrc
+docs/aboutMCP.md
+docs/ROADMAP.md
+docs/STATUS.md
+src/scripts/

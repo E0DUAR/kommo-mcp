@@ -83,6 +83,57 @@ type KommoConfig = {
 
 ---
 
+## 🤖 Using as MCP Server (Claude Desktop)
+
+To use this package as an MCP server in Claude Desktop or other MCP clients, add it to your configuration file.
+
+### automatic Configuration (npx)
+
+This is the easiest way to use the server without installing it globally.
+
+Add this to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "kommo-crm": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@syncraengine/kommo-mcp"
+      ],
+      "env": {
+        "KOMMO_BASE_URL": "https://your-domain.kommo.com",
+        "KOMMO_ACCESS_TOKEN": "your-long-lived-token"
+      }
+    }
+  }
+}
+```
+
+### Manual Configuration (Source)
+
+If you have cloned the repository locally:
+
+```json
+{
+  "mcpServers": {
+    "kommo-crm": {
+      "command": "node",
+      "args": [
+        "C:/path/to/kommo-mcp/dist/cjs/bin/mcp-server.js"
+      ],
+      "env": {
+        "KOMMO_BASE_URL": "https://your-domain.kommo.com",
+        "KOMMO_ACCESS_TOKEN": "your-long-lived-token"
+      }
+    }
+  }
+}
+```
+
+---
+
 ## 🔄 Authentication Flow
 
 ### First Time (With Authorization Code)
