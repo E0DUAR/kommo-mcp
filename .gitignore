@@ -17,7 +17,8 @@ src/scripts/
 .agent/indexes/
 .agent/cache/
 .agent/sessions/
-# Nota: .agent/rules/ y .agent/workflows/ SÍ se incluyen en git
+.agent/rules
+.agent/workflows/
 
 # Testing
 test-scripts/
