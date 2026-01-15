@@ -47,3 +47,13 @@ docs/aboutMCP.md
 
 # Development folder
 docs/dev/
+
+.agent/memory/
+.agent/indexes/
+.agent/cache/
+.agent/sessions/
+.agent/rules/
+.agent/workflows/
+
+# Testing
+test-scripts/

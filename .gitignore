@@ -13,3 +13,11 @@ docs/ROADMAP.md
 docs/STATUS.md
 docs/dev/
 src/scripts/
+.agent/memory/
+.agent/indexes/
+.agent/cache/
+.agent/sessions/
+# Nota: .agent/rules/ y .agent/workflows/ SÍ se incluyen en git
+
+# Testing
+test-scripts/
