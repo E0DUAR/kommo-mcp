@@ -44,3 +44,6 @@ docs/SEPARATION_PLAN.md
 # NPM Configuration
 .npmrc
 docs/aboutMCP.md
+
+# Development folder
+docs/dev/
