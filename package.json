@@ -1,6 +1,6 @@
 {
   "name": "@syncraengine/kommo-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Kommo CRM MCP - Model Context Protocol server and JavaScript/TypeScript SDK for Kommo CRM API v4",
   "license": "MIT",
   "author": "Syncra Engine",
