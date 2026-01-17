@@ -1,7 +1,7 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { 
-  ListToolsRequestSchema, 
-  CallToolRequestSchema 
+import {
+  ListToolsRequestSchema,
+  CallToolRequestSchema
 } from '@modelcontextprotocol/sdk/types.js';
 import { getKommoConfig } from './config.js';
 import * as handlers from './handlers.js';
@@ -12,8 +12,8 @@ import * as handlers from './handlers.js';
 export function registerKommoTools(server: Server): void {
   // Contacts
   server.setRequestHandler(ListToolsRequestSchema, async () => {
-    return {
-      tools: [
+    const config = getKommoConfig();
+    const tools: any[] = [
         {
           name: 'kommo_search_contact_by_phone',
           description: 'Search for contacts by phone number',
@@ -483,9 +483,397 @@ export function registerKommoTools(server: Server): void {
             required: ['noteId', 'entityType', 'text'],
           },
         },
-      ],
-    };
+
+        {
+          name: 'kommo_get_lead_timeline',
+          description: 'Get a chronological timeline of all lead activity (notes, tasks, history)',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              leadId: { type: 'number' },
+            },
+            required: ['leadId'],
+          },
+        },
+        {
+          name: 'kommo_get_lead_context_summary',
+          description: 'Get a structured summary of the lead for AI context (status, interactions, next steps)',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              leadId: { type: 'number' },
+            },
+            required: ['leadId'],
+          },
+        },
+        {
+          name: 'kommo_detect_lead_status',
+          description: 'Detect the semantic status of a lead (active, drifting, cold, closed) based on activity',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              leadId: { type: 'number' },
+            },
+            required: ['leadId'],
+          },
+        },
+        {
+          name: 'kommo_find_inactive_leads',
+          description: 'Find leads that have been inactive for a certain number of days',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              days: { type: 'number' },
+            },
+            required: ['days'],
+          },
+        },
+        {
+          name: 'kommo_bulk_create_leads',
+          description: 'Bulk create leads in a single request',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              leads: {
+                type: 'array',
+                items: { type: 'object' } // Simplified schema, relying on validation in handler
+              },
+            },
+            required: ['leads'],
+          },
+        },
+        {
+          name: 'kommo_bulk_update_leads',
+          description: 'Bulk update leads in a single request',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              updates: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  required: ['id']
+                }
+              },
+            },
+            required: ['updates'],
+          },
+        },
+        {
+          name: 'kommo_bulk_move_leads',
+          description: 'Bulk move leads to a specific status',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              leadIds: {
+                type: 'array',
+                items: { type: 'number' }
+              },
+              statusId: { type: 'number' },
+              pipelineId: { type: 'number' },
+            },
+            required: ['leadIds', 'statusId'],
+          },
+        },
+        {
+          name: 'kommo_assign_lead_to_user',
+          description: 'Assign a lead to a specific user (semantic wrapper)',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              leadId: { type: 'number' },
+              userId: { type: 'number' },
+            },
+            required: ['leadId', 'userId'],
+          },
+        },
+        {
+          name: 'kommo_get_pipeline_stats',
+          description: 'Get general statistics for a pipeline or all pipelines',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              pipelineId: { type: 'number' },
+              dateRange: {
+                type: 'object',
+                properties: {
+                  from: { type: 'number' },
+                  to: { type: 'number' },
+                },
+              },
+            },
+          },
+        },
+        {
+          name: 'kommo_get_conversion_rates',
+          description: 'Get conversion rates between stages for a pipeline',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              pipelineId: { type: 'number' },
+            },
+            required: ['pipelineId'],
+          },
+        },
+        {
+          name: 'kommo_get_lost_reasons_stats',
+          description: 'Analyze reasons for lost leads (Placeholder for Phase 3)',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              pipelineId: { type: 'number' },
+            },
+            required: ['pipelineId'],
+          },
+        },
+        {
+          name: 'kommo_get_user_performance',
+          description: 'Get performance metrics for a specific user',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              userId: { type: 'number' },
+            },
+            required: ['userId'],
+          },
+        },
+        // Phase 3: Structure Configuration
+        {
+          name: 'kommo_create_pipeline',
+          description: 'Create a new pipeline',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              sort: { type: 'number' },
+              is_main: { type: 'boolean' },
+            },
+            required: ['name'],
+          },
+        },
+        {
+          name: 'kommo_update_pipeline',
+          description: 'Update an existing pipeline',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              pipelineId: { type: 'number' },
+              name: { type: 'string' },
+              sort: { type: 'number' },
+              is_main: { type: 'boolean' },
+              is_archive: { type: 'boolean' },
+            },
+            required: ['pipelineId'],
+          },
+        },
+        {
+          name: 'kommo_create_status',
+          description: 'Create a new status in a pipeline',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              pipelineId: { type: 'number' },
+              name: { type: 'string' },
+              sort: { type: 'number' },
+              color: { type: 'string' },
+            },
+            required: ['pipelineId', 'name'],
+          },
+        },
+        {
+          name: 'kommo_update_status',
+          description: 'Update a status',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              pipelineId: { type: 'number' },
+              statusId: { type: 'number' },
+              name: { type: 'string' },
+              sort: { type: 'number' },
+              color: { type: 'string' },
+            },
+            required: ['pipelineId', 'statusId'],
+          },
+        },
+        // Phase 3: Custom Fields
+        {
+          name: 'kommo_create_custom_field',
+          description: 'Create a new custom field',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              entityType: { type: 'string', enum: ['leads', 'contacts', 'companies', 'customers', 'segments'] },
+              name: { type: 'string' },
+              type: { type: 'string', enum: ['text', 'numeric', 'checkbox', 'select', 'multiselect', 'date', 'url', 'textarea', 'radiobutton', 'streetaddress'] },
+              enums: { type: 'array', items: { type: 'object', properties: { value: { type: 'string' }, sort: { type: 'number' } } } },
+            },
+            required: ['entityType', 'name', 'type'],
+          },
+        },
+        {
+          name: 'kommo_update_custom_field',
+          description: 'Update a custom field',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              entityType: { type: 'string', enum: ['leads', 'contacts', 'companies', 'customers', 'segments'] },
+              fieldId: { type: 'number' },
+              name: { type: 'string' },
+            },
+            required: ['entityType', 'fieldId'],
+          },
+        },
+        // Phase 3: Users
+        {
+          name: 'kommo_list_users',
+          description: 'List all users in the account',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              active: { type: 'boolean', description: 'Filter by active users' },
+            },
+          },
+        },
+        {
+          name: 'kommo_get_user',
+          description: 'Get details of a specific user',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              userId: { type: 'number', description: 'The Kommo User ID' },
+            },
+            required: ['userId'],
+          },
+        },
+        {
+          name: 'kommo_list_roles',
+          description: 'List all roles defined in the account',
+          inputSchema: {
+            type: 'object',
+          },
+        },
+        {
+          name: 'kommo_get_user_availability',
+          description: 'Check user load (number of active leads assigned)',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              userId: { type: 'number', description: 'The Kommo User ID' },
+            },
+            required: ['userId'],
+          },
+        },
+        // Phase 3: Governance & Diagnostics
+        {
+          name: 'kommo_validate_account_setup',
+          description: 'Perform a health check of the CRM account (pipelines, users, fields)',
+          inputSchema: {
+            type: 'object',
+          },
+        },
+        {
+          name: 'kommo_check_missing_fields',
+          description: 'Find entities missing critical data in specific fields',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              entityType: { type: 'string', enum: ['leads', 'contacts', 'companies'] },
+              fieldIds: { 
+                type: 'array', 
+                items: { type: ['number', 'string'] },
+                description: 'Array of Field IDs (numbers) or standard field names like "name", "price"' 
+              },
+            },
+            required: ['entityType', 'fieldIds'],
+          },
+        },
+      ];
+
+    // Add Messaging Tools conditionally
+    if (config.messagingGatewayUrl && config.messagingGatewayApiKey) {
+      tools.push(
+        {
+          name: 'kommo_chat_send_message',
+          description: 'Send a message to a contact via a specific channel (WhatsApp, Telegram, etc.)',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              channel: { type: 'string', enum: ['whatsapp', 'telegram', 'instagram', 'facebook'] },
+              to: {
+                type: 'object',
+                properties: {
+                  contactId: { type: 'number' },
+                  phone: { type: 'string' },
+                  chatId: { type: 'string' },
+                },
+                required: ['contactId'],
+              },
+              message: {
+                type: 'object',
+                properties: {
+                  type: { type: 'string', enum: ['text'] },
+                  text: { type: 'string' },
+                },
+                required: ['type', 'text'],
+              },
+            },
+            required: ['channel', 'to', 'message'],
+          },
+        },
+        {
+          name: 'kommo_chat_get_history',
+          description: 'Get conversation history for a contact',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              channel: { type: 'string', enum: ['whatsapp', 'telegram', 'instagram', 'facebook'] },
+              contactId: { type: 'number' },
+              limit: { type: 'number', default: 20 },
+              cursor: { type: 'string' },
+            },
+            required: ['channel', 'contactId'],
+          },
+        },
+        {
+          name: 'kommo_chat_upsert_thread',
+          description: 'Prepare or retrieve a chat thread for a contact',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              channel: { type: 'string', enum: ['whatsapp', 'telegram', 'instagram', 'facebook'] },
+              identity: {
+                type: 'object',
+                properties: {
+                  phone: { type: 'string' },
+                  email: { type: 'string' },
+                },
+              },
+              profile: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string' },
+                },
+              },
+            },
+            required: ['channel', 'identity'],
+          },
+        },
+        {
+          name: 'kommo_check_messaging_gateway_health',
+          description: 'Check the health status of the Messaging Gateway',
+          inputSchema: {
+            type: 'object',
+            properties: {},
+            required: [],
+          },
+        }
+      );
+    }
+
+    return { tools };
   });
+
+
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
@@ -494,6 +882,7 @@ export function registerKommoTools(server: Server): void {
     switch (name) {
       case 'kommo_search_contact_by_phone':
         return await handlers.handleSearchContactByPhone(args as any, config);
+
       case 'kommo_search_contact_by_email':
         return await handlers.handleSearchContactByEmail(args as any, config);
       case 'kommo_get_contact':
@@ -570,6 +959,65 @@ export function registerKommoTools(server: Server): void {
         return await handlers.handleGetNote(args as any, config);
       case 'kommo_update_note':
         return await handlers.handleUpdateNote(args as any, config);
+      case 'kommo_get_lead_timeline':
+        return await handlers.handleGetLeadTimeline(args as any, config);
+      case 'kommo_get_lead_context_summary':
+        return await handlers.handleGetLeadContextSummary(args as any, config);
+      case 'kommo_detect_lead_status':
+        return await handlers.handleDetectLeadStatus(args as any, config);
+      case 'kommo_find_inactive_leads':
+        return await handlers.handleFindInactiveLeads(args as any, config);
+      case 'kommo_bulk_create_leads':
+        return await handlers.handleBulkCreateLeads(args as any, config);
+      case 'kommo_bulk_update_leads':
+        return await handlers.handleBulkUpdateLeads(args as any, config);
+      case 'kommo_bulk_move_leads':
+        return await handlers.handleBulkMoveLeads(args as any, config);
+      case 'kommo_assign_lead_to_user':
+        return await handlers.handleAssignLeadToUser(args as any, config);
+      case 'kommo_get_pipeline_stats':
+        return await handlers.handleGetPipelineStats(args as any, config);
+      case 'kommo_get_conversion_rates':
+        return await handlers.handleGetConversionRates(args as any, config);
+      case 'kommo_get_lost_reasons_stats':
+        return await handlers.handleGetLostReasonsStats(args as any, config);
+      case 'kommo_get_user_performance':
+        return await handlers.handleGetUserPerformance(args as any, config);
+      case 'kommo_create_pipeline':
+        return await handlers.handleCreatePipeline(args as any, config);
+      case 'kommo_update_pipeline':
+        return await handlers.handleUpdatePipeline(args as any, config);
+      case 'kommo_create_status':
+        return await handlers.handleCreateStatus(args as any, config);
+      case 'kommo_update_status':
+        return await handlers.handleUpdateStatus(args as any, config);
+      case 'kommo_create_custom_field':
+        return await handlers.handleCreateCustomField(args as any, config);
+      case 'kommo_update_custom_field':
+        return await handlers.handleUpdateCustomField(args as any, config);
+      case 'kommo_list_users':
+        return await handlers.handleListUsers(args as any, config);
+      case 'kommo_get_user':
+        return await handlers.handleGetUser(args as any, config);
+      case 'kommo_list_roles':
+        return await handlers.handleListRoles(config);
+      case 'kommo_get_user_availability':
+        return await handlers.handleGetUserAvailability(args as any, config);
+      case 'kommo_validate_account_setup':
+        return await handlers.handleValidateAccountSetup(config);
+      case 'kommo_check_missing_fields':
+        return await handlers.handleCheckMissingFields(args as any, config);
+      
+      // Messaging Tools
+      case 'kommo_chat_send_message':
+        return await handlers.handleChatSendMessage(args as any, config);
+      case 'kommo_chat_get_history':
+        return await handlers.handleChatGetHistory(args as any, config);
+      case 'kommo_chat_upsert_thread':
+        return await handlers.handleChatUpsertThread(args as any, config);
+      case 'kommo_check_messaging_gateway_health':
+        return await handlers.handleCheckMessagingGatewayHealth(config);
+        
       default:
         throw new Error(`Unknown tool: ${name}`);
     }

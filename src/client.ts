@@ -180,6 +180,99 @@ export async function kommoRequest<T = unknown>(
 }
 
 /**
+ * Make a request to the Messaging Gateway.
+ * 
+ * @param endpoint - Gateway endpoint (e.g., '/v1/messages/send')
+ * @param config - Kommo configuration containing gateway info
+ * @param options - Request options
+ */
+export async function messagingRequest<T = unknown>(
+  endpoint: string,
+  config: KommoConfig,
+  options: KommoRequestOptions = {}
+): Promise<T> {
+  const validatedConfig = kommoConfigSchema.parse(config);
+
+  if (!validatedConfig.messagingGatewayUrl || !validatedConfig.messagingGatewayApiKey) {
+    throw new Error('Messaging Gateway URL and API Key must be configured to use messaging features.');
+  }
+
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const fullUrl = `${validatedConfig.messagingGatewayUrl.replace(/\/+$/, '')}${cleanEndpoint}`;
+  const url = new URL(fullUrl);
+
+  // Add query parameters
+  if (options.query) {
+    for (const [key, value] of Object.entries(options.query)) {
+      if (value !== undefined && value !== null) {
+        url.searchParams.append(key, String(value));
+      }
+    }
+  }
+
+  // Build headers
+  const headers: Record<string, string> = {
+    'Authorization': `Bearer ${validatedConfig.messagingGatewayApiKey}`,
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
+
+  const fetchOptions: RequestInit = {
+    method: options.method || 'POST', // Default to POST for gateway calls
+    headers,
+  };
+
+  if (options.body !== undefined) {
+    fetchOptions.body = JSON.stringify(options.body);
+  }
+
+  if (process.env.KOMMO_DEBUG === 'true') {
+    console.log(`[Messaging Debug] ${fetchOptions.method} ${url.toString()}`);
+  }
+
+  const response = await fetch(url.toString(), fetchOptions);
+  const responseText = await response.text();
+
+  if (!response.ok) {
+    const statusCode = response.status;
+    let errorMessage = responseText.substring(0, 500) || response.statusText;
+    
+    switch (statusCode) {
+      case 401:
+        errorMessage = 'API Key inválida o faltante';
+        break;
+      case 404:
+        errorMessage = 'Contacto no existe en Kommo';
+        break;
+      case 429:
+        errorMessage = 'Rate limit alcanzado, esperar y reintentar';
+        break;
+      case 500:
+        errorMessage = 'Error del Gateway, revisar logs';
+        break;
+      case 502:
+        errorMessage = 'Gateway no puede comunicarse con Kommo o canal';
+        break;
+      case 503:
+        errorMessage = 'Gateway temporalmente no disponible';
+        break;
+    }
+    
+    throw new MessagingGatewayError(
+      statusCode,
+      errorMessage,
+      url.toString()
+    );
+  }
+
+  try {
+    return JSON.parse(responseText) as T;
+  } catch (e) {
+    return responseText as unknown as T;
+  }
+}
+
+/**
  * Error class for Kommo API errors.
  */
 export class KommoAPIError extends Error {
@@ -195,6 +288,26 @@ export class KommoAPIError extends Error {
 
   toString(): string {
     return `KommoAPIError (${this.statusCode}): ${this.message}${this.url ? ` - ${this.url}` : ''}`;
+  }
+}
+
+/**
+ * Error class for Messaging Gateway errors.
+ * Provides specific error messages based on HTTP status codes.
+ */
+export class MessagingGatewayError extends Error {
+  constructor(
+    public readonly statusCode: number,
+    public readonly message: string,
+    public readonly url?: string,
+    public readonly responseBody?: string
+  ) {
+    super(message);
+    this.name = 'MessagingGatewayError';
+  }
+
+  toString(): string {
+    return `MessagingGatewayError (${this.statusCode}): ${this.message}${this.url ? ` - ${this.url}` : ''}`;
   }
 }
 

@@ -17,8 +17,8 @@
 export { kommoConfigSchema, type KommoConfig } from './types.js';
 export { getKommoConfig } from './server/config.js';
 export type { KommoContact, SearchContactParams, GetContactParams, SearchContactResult, GetContactResult } from './types.js';
-export { 
-  SEARCH_CONTACT_TOOL_DESCRIPTION, 
+export {
+  SEARCH_CONTACT_TOOL_DESCRIPTION,
   GET_CONTACT_TOOL_DESCRIPTION,
   LIST_PIPELINES_TOOL_DESCRIPTION,
   GET_PIPELINE_TOOL_DESCRIPTION,
@@ -92,6 +92,76 @@ export type {
   ListLeadsResult,
   KommoLead,
 } from './entities/leads/types.js';
+
+export {
+  getLeadTimeline,
+  getLeadContextSummary,
+  detectLeadStatus,
+  findInactiveLeads,
+  type TimelineEvent,
+  type LeadContextSummary,
+} from './entities/leads/intelligence.js';
+
+export * from './entities/leads/batch.js';
+
+export {
+  getPipelineStats,
+  getConversionRates,
+  getLostReasonsStats,
+  getUserPerformance,
+  type PipelineStats,
+  type ConversionMetric,
+  type UserPerformance,
+} from './entities/leads/analytics.js';
+
+// Pipelines & Statuses (Structure)
+export * from './entities/pipelines/write.js';
+
+// Custom Fields
+export * from './entities/custom_fields/write.js';
+
+// Users
+export {
+  listUsers,
+  getUser,
+  listRoles,
+  getUserAvailability,
+} from './entities/users/read.js';
+
+export type {
+  KommoUser,
+  ListUsersParams,
+  GetUserParams,
+  ListUsersResult,
+  GetUserResult,
+} from './entities/users/types.js';
+
+// Account & Governance
+export {
+  validateAccountSetup,
+  checkMissingFields,
+} from './entities/account/governance.js';
+
+// ============================================
+// Talks (Messaging) - Read/Write Operations
+// ============================================
+
+export {
+  kommoChatGetHistory,
+  checkMessagingGatewayHealth,
+} from './entities/talks/read.js';
+
+export {
+  kommoChatSendMessage,
+  kommoChatUpsertThread,
+} from './entities/talks/write.js';
+
+export * from './entities/talks/types.js';
+
+// Legacy aliases for backward compatibility (if needed)
+export { kommoChatGetHistory as getChatHistory } from './entities/talks/read.js';
+export { kommoChatSendMessage as sendMessage } from './entities/talks/write.js';
+export { kommoChatUpsertThread as upsertChatThread } from './entities/talks/write.js';
 
 // ============================================
 // Companies - Read Operations

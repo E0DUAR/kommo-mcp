@@ -1,8 +1,8 @@
-import { 
-  searchContactByPhone, 
-  getContact, 
-  listLeads, 
-  getLead, 
+import {
+  searchContactByPhone,
+  getContact,
+  listLeads,
+  getLead,
   updateLead,
   createLead,
   updateLeadStatus,
@@ -39,7 +39,47 @@ import {
   listPipelines,
   getPipelineStatuses,
   listCatalogs,
-  listCatalogElements
+  listCatalogElements,
+  getLeadTimeline,
+  getLeadContextSummary,
+  detectLeadStatus,
+  findInactiveLeads,
+  bulkCreateLeads,
+  bulkUpdateLeads,
+  bulkMoveLeads,
+  assignLeadToUser,
+  getPipelineStats,
+  getConversionRates,
+  getLostReasonsStats,
+  getUserPerformance,
+  createPipeline,
+  updatePipeline,
+  createStatus,
+  updateStatus,
+  deleteStatus,
+  createCustomField,
+  updateCustomField,
+  deleteCustomField,
+  listUsers,
+  getUser,
+  listRoles,
+  getUserAvailability,
+  validateAccountSetup,
+  checkMissingFields,
+  kommoChatSendMessage,
+  kommoChatGetHistory,
+  kommoChatUpsertThread,
+  checkMessagingGatewayHealth,
+  type CreatePipelineData,
+  type UpdatePipelineData,
+  type CreateStatusData,
+  type UpdateStatusData,
+  type CreateCustomFieldData,
+  type UpdateCustomFieldData,
+  type EntityType,
+  type SendMessageParams,
+  type GetChatHistoryParams,
+  type UpsertThreadParams,
 } from '../index.js';
 import type { KommoConfig } from '../types.js';
 
@@ -479,10 +519,10 @@ export async function handleListPipelines(
  * Handle kommo_create_task tool call.
  */
 export async function handleCreateTask(
-  args: { 
-    text: string; 
-    complete_till: number; 
-    entity_id: number; 
+  args: {
+    text: string;
+    complete_till: number;
+    entity_id: number;
     entity_type: string;
     task_type_id?: number;
     responsible_user_id?: number;
@@ -549,8 +589,8 @@ export async function handleGetCompany(
  * Handle kommo_list_deals tool call.
  */
 export async function handleListDeals(
-  args: { 
-    page?: number; 
+  args: {
+    page?: number;
     limit?: number;
     responsible_user_id?: number;
   },
@@ -574,10 +614,10 @@ export async function handleListDeals(
  * Handle kommo_create_deal tool call.
  */
 export async function handleCreateDeal(
-  args: { 
-    name: string; 
-    price?: number; 
-    status_id?: number; 
+  args: {
+    name: string;
+    price?: number;
+    status_id?: number;
     pipeline_id?: number;
     _embedded?: any;
   },
@@ -768,11 +808,11 @@ export async function handleListContacts(
  * Handle kommo_update_contact tool call.
  */
 export async function handleUpdateContact(
-  args: { 
-    contactId: number; 
-    name?: string; 
-    first_name?: string; 
-    last_name?: string; 
+  args: {
+    contactId: number;
+    name?: string;
+    first_name?: string;
+    last_name?: string;
     responsible_user_id?: number;
     custom_fields_values?: any[];
   },
@@ -796,9 +836,9 @@ export async function handleUpdateContact(
  * Handle kommo_update_company tool call.
  */
 export async function handleUpdateCompany(
-  args: { 
-    companyId: number; 
-    name?: string; 
+  args: {
+    companyId: number;
+    name?: string;
     responsible_user_id?: number;
     custom_fields_values?: any[];
   },
@@ -864,11 +904,11 @@ export async function handleGetDeal(
  * Handle kommo_update_deal tool call.
  */
 export async function handleUpdateDeal(
-  args: { 
-    dealId: number; 
-    name?: string; 
-    price?: number; 
-    status_id?: number; 
+  args: {
+    dealId: number;
+    name?: string;
+    price?: number;
+    status_id?: number;
     pipeline_id?: number;
     custom_fields_values?: any[];
   },
@@ -934,10 +974,10 @@ export async function handleGetTask(
  * Handle kommo_update_task tool call.
  */
 export async function handleUpdateTask(
-  args: { 
-    taskId: number; 
-    text?: string; 
-    is_completed?: boolean; 
+  args: {
+    taskId: number;
+    text?: string;
+    is_completed?: boolean;
     complete_till?: number;
     result_text?: string;
   },
@@ -1060,4 +1100,528 @@ export async function handleGetPipelineStatuses(
   return {
     content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
   };
+}
+
+/**
+ * Handle kommo_get_lead_timeline tool call.
+ */
+export async function handleGetLeadTimeline(
+  args: { leadId: number },
+  config: KommoConfig
+) {
+  const result = await getLeadTimeline(args.leadId, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_get_lead_context_summary tool call.
+ */
+export async function handleGetLeadContextSummary(
+  args: { leadId: number },
+  config: KommoConfig
+) {
+  const result = await getLeadContextSummary(args.leadId, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_detect_lead_status tool call.
+ */
+export async function handleDetectLeadStatus(
+  args: { leadId: number },
+  config: KommoConfig
+) {
+  const result = await detectLeadStatus(args.leadId, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_find_inactive_leads tool call.
+ */
+export async function handleFindInactiveLeads(
+  args: { days: number },
+  config: KommoConfig
+) {
+  const result = await findInactiveLeads(args.days, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_bulk_create_leads tool call.
+ */
+export async function handleBulkCreateLeads(
+  args: { leads: any[] },
+  config: KommoConfig
+) {
+  const result = await bulkCreateLeads(args.leads, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_bulk_update_leads tool call.
+ */
+export async function handleBulkUpdateLeads(
+  args: { updates: any[] },
+  config: KommoConfig
+) {
+  const result = await bulkUpdateLeads(args.updates, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_bulk_move_leads tool call.
+ */
+export async function handleBulkMoveLeads(
+  args: { leadIds: number[]; statusId: number; pipelineId?: number },
+  config: KommoConfig
+) {
+  const result = await bulkMoveLeads(args.leadIds, args.statusId, args.pipelineId, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_assign_lead_to_user tool call.
+ */
+export async function handleAssignLeadToUser(
+  args: { leadId: number; userId: number },
+  config: KommoConfig
+) {
+  const result = await assignLeadToUser(args.leadId, args.userId, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_get_pipeline_stats tool call.
+ */
+export async function handleGetPipelineStats(
+  args: { pipelineId?: number; dateRange?: { from?: number; to?: number } },
+  config: KommoConfig
+) {
+  const result = await getPipelineStats(args.pipelineId, args.dateRange, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_get_conversion_rates tool call.
+ */
+export async function handleGetConversionRates(
+  args: { pipelineId: number },
+  config: KommoConfig
+) {
+  const result = await getConversionRates(args.pipelineId, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_get_lost_reasons_stats tool call.
+ */
+export async function handleGetLostReasonsStats(
+  args: { pipelineId: number },
+  config: KommoConfig
+) {
+  const result = await getLostReasonsStats(args.pipelineId, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+/**
+ * Handle kommo_get_user_performance tool call.
+ */
+export async function handleGetUserPerformance(
+  args: { userId: number },
+  config: KommoConfig
+) {
+  const result = await getUserPerformance(args.userId, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+  };
+}
+
+// --- Phase 3: Structure Configuration ---
+
+export async function handleCreatePipeline(
+  args: CreatePipelineData,
+  config: KommoConfig
+) {
+  const result = await createPipeline(args, config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+export async function handleUpdatePipeline(
+  args: { pipelineId: number } & UpdatePipelineData,
+  config: KommoConfig
+) {
+  const { pipelineId, ...data } = args;
+  const result = await updatePipeline(pipelineId, data, config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+export async function handleCreateStatus(
+  args: { pipelineId: number } & CreateStatusData,
+  config: KommoConfig
+) {
+  const { pipelineId, ...data } = args;
+  const result = await createStatus(pipelineId, data, config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+export async function handleUpdateStatus(
+  args: { pipelineId: number; statusId: number } & UpdateStatusData,
+  config: KommoConfig
+) {
+  const { pipelineId, statusId, ...data } = args;
+  const result = await updateStatus(pipelineId, statusId, data, config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+export async function handleDeleteStatus(
+  args: { pipelineId: number; statusId: number },
+  config: KommoConfig
+) {
+  const result = await deleteStatus(args.pipelineId, args.statusId, config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify({ success: true, message: 'Status deleted' }, null, 2) }] };
+}
+
+// --- Phase 3: Custom Fields ---
+
+export async function handleCreateCustomField(
+  args: { entityType: EntityType } & CreateCustomFieldData,
+  config: KommoConfig
+) {
+  const { entityType, ...data } = args;
+  const result = await createCustomField(entityType, data, config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+export async function handleUpdateCustomField(
+  args: { entityType: EntityType; fieldId: number } & UpdateCustomFieldData,
+  config: KommoConfig
+) {
+  const { entityType, fieldId, ...data } = args;
+  const result = await updateCustomField(entityType, fieldId, data, config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+/**
+ * Handle kommo_delete_custom_field tool call.
+ */
+export async function handleDeleteCustomField(
+  args: { entityType: EntityType; fieldId: number },
+  config: KommoConfig
+) {
+  const result = await deleteCustomField(args.entityType, args.fieldId, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return { content: [{ type: 'text', text: JSON.stringify({ success: true, message: 'Custom field deleted' }, null, 2) }] };
+}
+
+/**
+ * Handle kommo_list_users tool call.
+ */
+export async function handleListUsers(
+  args: { active?: boolean },
+  config: KommoConfig
+) {
+  const result = await listUsers(args, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+/**
+ * Handle kommo_get_user tool call.
+ */
+export async function handleGetUser(
+  args: { userId: number },
+  config: KommoConfig
+) {
+  const result = await getUser(args, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+/**
+ * Handle kommo_list_roles tool call.
+ */
+export async function handleListRoles(
+  config: KommoConfig
+) {
+  const result = await listRoles(config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+/**
+ * Handle kommo_get_user_availability tool call.
+ */
+export async function handleGetUserAvailability(
+  args: { userId: number },
+  config: KommoConfig
+) {
+  const result = await getUserAvailability(args.userId, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+/**
+ * Handle kommo_validate_account_setup tool call.
+ */
+export async function handleValidateAccountSetup(
+  config: KommoConfig
+) {
+  const result = await validateAccountSetup(config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+/**
+ * Handle kommo_check_missing_fields tool call.
+ */
+export async function handleCheckMissingFields(
+  args: { entityType: 'leads' | 'contacts' | 'companies'; fieldIds: (number | string)[] },
+  config: KommoConfig
+) {
+  const result = await checkMissingFields(args.entityType, args.fieldIds, config);
+
+  if (!result.success) {
+    return {
+      content: [{ type: 'text', text: `Error: ${result.error}` }],
+      isError: true,
+    };
+  }
+
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+/**
+ * Handle kommo_chat_send_message tool call.
+ */
+export async function handleChatSendMessage(
+  args: SendMessageParams,
+  config: KommoConfig
+) {
+  const result = await kommoChatSendMessage(args, config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+/**
+ * Handle kommo_chat_get_history tool call.
+ */
+export async function handleChatGetHistory(
+  args: GetChatHistoryParams,
+  config: KommoConfig
+) {
+  const result = await kommoChatGetHistory(args, config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+/**
+ * Handle kommo_chat_upsert_thread tool call.
+ */
+export async function handleChatUpsertThread(
+  args: UpsertThreadParams,
+  config: KommoConfig
+) {
+  const result = await kommoChatUpsertThread(args, config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+}
+
+/**
+ * Handle kommo_check_messaging_gateway_health tool call.
+ */
+export async function handleCheckMessagingGatewayHealth(
+  config: KommoConfig
+) {
+  const result = await checkMessagingGatewayHealth(config);
+  if (!result.success) {
+    return { content: [{ type: 'text', text: `Error: ${result.error}` }], isError: true };
+  }
+  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
 }
