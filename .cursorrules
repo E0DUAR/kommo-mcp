@@ -1,0 +1,145 @@
+# Kommo MCP - Cursor Rules
+
+## Arquitectura del Proyecto
+
+- **Estructura dual**: ESM + CommonJS (ver `tsconfig.json` y `tsconfig.cjs.json`)
+- **Entrada MCP**: `src/bin/mcp-server.ts`
+- **Funciones exportables**: `src/kommo/*.ts`
+- **Node.js**: Requiere >= 20.0.0
+
+## Convenciones de Código
+
+- **TypeScript**: Usar TypeScript estricto
+- **Validación**: Usar Zod para validación de schemas
+- **Retorno de funciones**: Todas las funciones deben retornar `{ success: true/false, ... }`
+- **Patrones**: Seguir el patrón de las funciones existentes en `src/kommo/`
+- **Código Limpio**: 
+  - Evitar comentarios obvios o que parezcan generados por IA
+  - Los comentarios deben aportar contexto valioso
+  - Parecer escritos por un senior
+  - Usarse solo cuando sea estrictamente necesario
+
+## Documentación (Sistema Auto-Actualizable)
+
+La documentación está organizada en dos categorías: **externa** (pública) e **interna** (desarrollo). Ver `docs/index.md` para referencia completa.
+
+### Estructura de `docs/`
+
+#### Documentación Externa (Se publica en npm/GitHub)
+- **`docs/guides/`** - Guías para usuarios:
+  - `SETUP.md` - Configuración OAuth 2.0 y setup inicial
+  - `BEST_PRACTICES.md` - Mejores prácticas y patrones
+- **`docs/reference/`** - Referencia técnica:
+  - `KNOWN_ISSUES.md` - Problemas conocidos y soluciones
+- **`docs/templates/`** - Templates para usuarios:
+  - `CONTEXT_TEMPLATE.md` - Template para contexto de IA
+
+#### Documentación Interna (NO se publica - excluida en `.gitignore` y `.npmignore`)
+- **`docs/internal/dev/`** - Desarrollo:
+  - `STATUS.md` - Estado actual del proyecto, fases, conteos
+  - `ROADMAP.md` - Roadmap y visión del proyecto
+  - `aboutMCP.md` - Arquitectura técnica del MCP
+  - `features/` - Bitácora de features (FEATURE-*.md)
+- **`docs/internal/messaging/`** - Messaging Gateway (especificaciones técnicas)
+- **`docs/internal/gateway/`** - Gateway Implementation (guías técnicas)
+- **`docs/index.md`** - Índice completo de documentación (solo interno)
+
+### Reglas Críticas de Documentación
+
+1. **Separación Externa/Interna:**
+   - ❌ **NUNCA** referenciar `docs/internal/` desde documentación externa
+   - ✅ Documentación externa debe ser autónoma
+   - ✅ Documentación interna puede referenciar externa
+
+2. **Nombres de Paquete:**
+   - ✅ Siempre usar `@syncraengine/kommo-mcp` (no `@syncra/kommo-mcp`)
+
+3. **Cuándo Actualizar:**
+
+   **Al agregar feature pública:**
+   - Actualizar `docs/guides/SETUP.md` si requiere nueva configuración
+   - Actualizar `docs/guides/BEST_PRACTICES.md` si hay nuevas prácticas
+   - Actualizar `README.md` principal
+   - Crear/actualizar `docs/internal/dev/features/FEATURE-{nombre}.md`
+
+   **Al resolver problema:**
+   - Actualizar `docs/reference/KNOWN_ISSUES.md`
+   - Si es relevante, actualizar `docs/guides/BEST_PRACTICES.md`
+
+   **Al completar fase:**
+   - Actualizar `docs/internal/dev/STATUS.md` (conteos, estado)
+   - Actualizar `docs/internal/dev/ROADMAP.md` si cambia roadmap
+   - Actualizar `docs/internal/dev/features/FEATURE-phaseX.md`
+   - Actualizar `README.md` si hay features públicas nuevas
+
+   **Al cambiar configuración interna:**
+   - Actualizar `docs/internal/dev/STATUS.md`
+   - Actualizar `.cursorrules` si cambian convenciones
+
+**Al implementar cambios significativos, sugiere actualizaciones a la documentación correspondiente.**
+
+## Gestión de Features
+
+- **Documentación Obligatoria**: Cada nueva feature debe tener su archivo en `docs/internal/dev/features/FEATURE-{nombre}.md` usando `FEATURE_TEMPLATE.md`
+- **Bitácora**: Mantener la bitácora de progreso en el archivo de la feature para trazabilidad entre chats
+- **Ciclo de Vida**: PLANNING → IN_PROGRESS → TESTING → COMPLETE
+
+## Control de Versiones y Ramas
+
+- **Rama `main`**: Solo para código estable, probado y listo para producción
+- **Rama `dev`**: Rama principal de desarrollo e integración de features
+- **Flujo**: Feature → Merge a `dev` → Pruebas → Merge a `main`
+
+## Versionado npm (Semantic Versioning)
+
+- **MAJOR (x.0.0)**: Cambios incompatibles (Breaking Changes)
+- **MINOR (0.x.0)**: Nuevas funcionalidades compatibles hacia atrás
+- **PATCH (0.0.x)**: Corrección de bugs o mejoras menores compatibles
+
+## Testing
+
+- **Carpeta de pruebas**: `test-scripts/`
+- **NUNCA** crear scripts de prueba fuera de `test-scripts/`
+- Los archivos de prueba deben tener nombres descriptivos (ej: `test-contact-search.ts`)
+
+## API Kommo
+
+- **API v4 únicamente**
+- Base URL se normaliza automáticamente
+- Ver `docs/reference/KNOWN_ISSUES.md` para edge cases
+
+## Consultoría y Resolución de Problemas (Escalación)
+
+- **Experto en API Kommo**: Contamos con un experto consultor externo para la API de Kommo.
+- **Criterio de Escalación**: Solo en casos extremos, si tras múltiples intentos no logramos resolver un problema técnico complejo relacionado específicamente con la API de Kommo y estamos "dando vueltas" sin solución, eres libre de sugerir: "Preguntemos esto al experto en la API de Kommo".
+- **Último Recurso**: Antes de sugerirlo, agota todas las vías de investigación (documentación, logs, pruebas locales).
+
+## Seguridad
+
+> ⚠️ **IMPORTANTE**: Hay usuarios activos usando este paquete en npm y GitHub.
+> No hacer cambios que rompan la compatibilidad sin versión mayor.
+
+- **Credenciales**: NUNCA exponer tokens, contraseñas o claves API en el código o commits
+- **Revisión**: Verificar `.env` y archivos de configuración antes de cada commit
+- **Datos de Prueba**: Usar datos ficticios en ejemplos y tests
+
+
+## Patrones Técnicos Críticos
+
+- **Vincular Entidades**: Preferir siempre `_embedded` al crear (e.g., crear Lead con Contacto embebido) en lugar de crear y luego vincular.
+- **Notas**: En API v4, las notas SIEMPRE requieren `entityType` (contacts, leads, companies, etc.).
+- **Manejo de Errores**: Siempre verificar `if (!result.success)` antes de acceder a los datos.
+- **Paginación**: Usar `normalizePagination` y manejar bucles para datasets grandes (>250 items).
+
+## Build y Distribución
+
+- **Build**: `npm run build` (compila ESM y CJS)
+- **Archivos publicados**: Solo `dist/`, `README.md`, `LICENSE`
+- **Exports**: Configurados para ESM y CommonJS en `package.json`
+
+## Dependencias Principales
+
+- `@modelcontextprotocol/sdk`: SDK para MCP
+- `zod`: Validación de schemas
+- `typescript`: Compilador TypeScript
+- `tsx`: Ejecución de TypeScript en desarrollo

@@ -23,6 +23,7 @@ export const kommoNoteSchema = z.object({
   entity_id: z.number().optional(),
   entity_type: z.string().optional(),
   account_id: z.number().optional(),
+  params: z.any().optional(),
 });
 
 export type KommoNote = z.infer<typeof kommoNoteSchema>;

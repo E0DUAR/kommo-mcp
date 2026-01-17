@@ -15,9 +15,14 @@ This package provides a dual-purpose solution:
 
 -   **Complete CRUD:** Full management of **Leads, Contacts, Companies, Deals, Tasks, and Notes**.
 -   **Advanced Features:**
-    -   Manage **Pipelines and Statuses**.
-    -   Handle **Custom Fields** intelligently (search by name, metadata awareness).
+    -   Manage **Pipelines and Statuses** (read and write).
+    -   Handle **Custom Fields** intelligently (search by name, metadata awareness, create/update).
     -   **Catalogs & Products** support (including linking products to leads).
+    -   **Analytics & Intelligence:** Lead timeline, context summaries, status detection, pipeline stats, conversion rates.
+    -   **Batch Operations:** Bulk create, update, and move leads efficiently.
+    -   **Governance:** Account validation, missing fields detection.
+    -   **Users & Roles:** User management and availability tracking.
+    -   **Messaging:** Chat history, send messages, thread management.
 -   **AI-Ready:** Designed with semantic tools optimized for LLM usage.
 -   **Type-Safe:** Built with TypeScript and Zod for robust validation.
 -   **Dual Build:** Supports both ESM (`import`) and CommonJS (`require`).
@@ -113,15 +118,22 @@ main();
 
 ## 🛠️ Available Tools (MCP)
 
-The server exposes ~40 tools to the AI, covering:
+The server exposes **66 tools** to the AI, covering:
 
-*   **Contacts:** `kommo_search_contact_by_phone`, `kommo_create_contact`, `kommo_update_contact`, etc.
+*   **Contacts:** `kommo_search_contact_by_phone`, `kommo_create_contact`, `kommo_update_contact`, `kommo_list_contacts`, etc.
 *   **Leads:** `kommo_list_leads`, `kommo_create_lead`, `kommo_update_lead`, `kommo_update_lead_custom_fields`, etc.
-*   **Companies:** `kommo_search_company`, `kommo_create_company`, `kommo_update_company`.
-*   **Tasks:** `kommo_list_tasks`, `kommo_create_task`, `kommo_update_task`.
-*   **Notes:** `kommo_list_notes`, `kommo_create_note`.
-*   **Pipelines:** `kommo_list_pipelines`, `kommo_get_pipeline_statuses`.
-*   **Products:** `kommo_list_catalogs`, `kommo_link_product_to_lead`.
+*   **Companies:** `kommo_search_company`, `kommo_create_company`, `kommo_update_company`, `kommo_list_companies`.
+*   **Deals:** `kommo_list_deals`, `kommo_create_deal`, `kommo_update_deal`, `kommo_search_deal`.
+*   **Tasks:** `kommo_list_tasks`, `kommo_create_task`, `kommo_update_task`, `kommo_get_task`.
+*   **Notes:** `kommo_list_notes`, `kommo_create_note`, `kommo_get_note`, `kommo_update_note`.
+*   **Pipelines:** `kommo_list_pipelines`, `kommo_get_pipeline_statuses`, `kommo_create_pipeline`, `kommo_update_pipeline`, `kommo_create_status`, `kommo_update_status`.
+*   **Products:** `kommo_list_catalogs`, `kommo_list_catalog_elements`, `kommo_link_product_to_lead`, `kommo_unlink_product_from_lead`.
+*   **Analytics & Intelligence:** `kommo_get_lead_timeline`, `kommo_get_lead_context_summary`, `kommo_detect_lead_status`, `kommo_find_inactive_leads`, `kommo_get_pipeline_stats`, `kommo_get_conversion_rates`, `kommo_get_user_performance`.
+*   **Batch Operations:** `kommo_bulk_create_leads`, `kommo_bulk_update_leads`, `kommo_bulk_move_leads`.
+*   **Governance:** `kommo_validate_account_setup`, `kommo_check_missing_fields`.
+*   **Users:** `kommo_list_users`, `kommo_get_user`, `kommo_list_roles`, `kommo_get_user_availability`.
+*   **Custom Fields:** `kommo_create_custom_field`, `kommo_update_custom_field`, `kommo_get_select_field_options`.
+*   **Messaging:** `kommo_chat_send_message`, `kommo_chat_get_history`, `kommo_chat_upsert_thread`.
 
 ---
 

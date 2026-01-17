@@ -17,7 +17,7 @@ A comprehensive, isolated MCP (Model Context Protocol) client for Kommo CRM API 
 This module is currently part of the Syncra Engine codebase, but is designed to be extracted to a standalone package.
 
 ```bash
-# Future: npm install @syncra/kommo-mcp
+# Future: npm install @syncraengine/kommo-mcp
 ```
 
 ## Configuration
@@ -25,7 +25,7 @@ This module is currently part of the Syncra Engine codebase, but is designed to 
 You need OAuth 2.0 credentials from Kommo:
 
 ```typescript
-import { kommoConfigSchema, type KommoConfig } from '@syncra/kommo-mcp';
+import { kommoConfigSchema, type KommoConfig } from '@syncraengine/kommo-mcp';
 
 const config: KommoConfig = {
   baseUrl: 'https://your-domain.kommo.com', // or https://your-domain.kommo.com/api/v4
@@ -41,7 +41,7 @@ const validated = kommoConfigSchema.parse(config);
 ### Search for a Contact
 
 ```typescript
-import { searchContactByPhone, type KommoConfig } from '@syncra/kommo-mcp';
+import { searchContactByPhone, type KommoConfig } from '@syncraengine/kommo-mcp';
 
 const result = await searchContactByPhone(
   {
@@ -62,7 +62,7 @@ if (result.success) {
 ### Create a Contact
 
 ```typescript
-import { createContact, type KommoConfig } from '@syncra/kommo-mcp';
+import { createContact, type KommoConfig } from '@syncraengine/kommo-mcp';
 
 const result = await createContact(
   {
@@ -87,7 +87,7 @@ if (result.success && result.contact) {
 ### List Leads with Filters
 
 ```typescript
-import { listLeads, type KommoConfig } from '@syncra/kommo-mcp';
+import { listLeads, type KommoConfig } from '@syncraengine/kommo-mcp';
 
 const result = await listLeads(
   {
@@ -322,12 +322,12 @@ kommo-crm/
 
 For detailed documentation, see the `docs/` directory:
 
-- **Status & Current Phase**: See `docs/STATUS.md`
-- **Roadmap**: See `docs/ROADMAP.md`
-- **Setup Guide**: See `docs/SETUP.md`
-- **Best Practices**: See `docs/BEST_PRACTICES.md`
-- **Known Issues**: See `docs/KNOWN_ISSUES.md`
-- **Context Template**: See `docs/CONTEXT_TEMPLATE.md` (for project-specific context)
+- **Status & Current Phase**: See `docs/internal/dev/STATUS.md`
+- **Roadmap**: See `docs/internal/dev/ROADMAP.md`
+- **Setup Guide**: See `docs/guides/SETUP.md`
+- **Best Practices**: See `docs/guides/BEST_PRACTICES.md`
+- **Known Issues**: See `docs/reference/KNOWN_ISSUES.md`
+- **Context Template**: See `docs/templates/CONTEXT_TEMPLATE.md` (for project-specific context)
 
 ## Current Status
 
@@ -342,7 +342,7 @@ For detailed documentation, see the `docs/` directory:
 - ✅ OAuth 2.0 working
 - ✅ 83+ functions implemented
 
-See `docs/STATUS.md` for detailed status information.
+See `docs/internal/dev/STATUS.md` for detailed status information.
 
 ## License
 
@@ -356,5 +356,5 @@ See `docs/STATUS.md` for detailed status information.
 
 For issues related to:
 - **Kommo API**: See [Kommo API Documentation](https://developers.kommo.com/reference/kommo-api-reference)
-- **This MCP**: See `docs/KNOWN_ISSUES.md` for resolved issues and solutions
-- **Setup Help**: See `docs/SETUP.md` for configuration guide
+- **This MCP**: See `docs/reference/KNOWN_ISSUES.md` for resolved issues and solutions
+- **Setup Help**: See `docs/guides/SETUP.md` for configuration guide

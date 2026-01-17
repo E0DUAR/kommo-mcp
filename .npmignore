@@ -34,8 +34,6 @@ Thumbs.db
 
 # Documentation not for end-users
 docs/COMPREHENSIVE_MIGRATION_PLAN.md
-docs/ROADMAP.md
-docs/STATUS.md
 docs/HANDOFF_TO_NEW_IA.md
 docs/MIGRATION_PROGRESS.md
 docs/MIGRATION_STEP_BY_STEP.md
@@ -43,10 +41,13 @@ docs/SEPARATION_PLAN.md
 
 # NPM Configuration
 .npmrc
-docs/aboutMCP.md
 
-# Development folder
-docs/dev/
+# Internal documentation (not for end-users)
+docs/internal/
+docs/index.md
+docs/REPORT-FOR-BOSS.md
+docs/internal/GATEWAY_INTEGRATION_ANALYSIS.md
+docs/internal/dev/IMPROVEMENT_PLAN_GATEWAY.md
 
 .agent/memory/
 .agent/indexes/

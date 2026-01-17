@@ -21,5 +21,7 @@ export function getKommoConfig(): KommoConfig {
   return {
     baseUrl: finalBaseUrl,
     accessToken,
+    messagingGatewayUrl: process.env.SYNC_MESSAGING_URL,
+    messagingGatewayApiKey: process.env.SYNC_MESSAGING_API_KEY,
   };
 }

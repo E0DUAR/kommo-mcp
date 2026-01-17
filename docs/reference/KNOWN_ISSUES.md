@@ -179,9 +179,8 @@ await linkLeadToContact(leadId, contactId, config);
 ## 📚 References
 
 - **Kommo API Documentation:** https://developers.kommo.com/reference/kommo-api-reference
-- **Current Status:** See `docs/STATUS.md`
-- **Setup Guide:** See `docs/SETUP.md`
-- **Roadmap:** See `docs/ROADMAP.md`
+- **Setup Guide:** See `docs/guides/SETUP.md`
+- **Best Practices:** See `docs/guides/BEST_PRACTICES.md`
 - **Main README:** See `README.md`
 
 ---

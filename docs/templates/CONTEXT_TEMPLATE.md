@@ -118,10 +118,9 @@ This template provides a structure for documenting project-specific context when
 
 ### MCP Documentation
 - **Main README:** See `README.md`
-- **Current Status:** See `docs/STATUS.md`
-- **Roadmap:** See `docs/ROADMAP.md`
-- **Setup Guide:** See `docs/SETUP.md`
-- **Known Issues:** See `docs/KNOWN_ISSUES.md`
+- **Setup Guide:** See `docs/guides/SETUP.md`
+- **Best Practices:** See `docs/guides/BEST_PRACTICES.md`
+- **Known Issues:** See `docs/reference/KNOWN_ISSUES.md`
 
 ---
 

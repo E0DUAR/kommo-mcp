@@ -27,6 +27,12 @@ export const kommoConfigSchema = z.object({
   
   /** Access token for OAuth 2.0 authentication */
   accessToken: z.string().min(1, 'Access token is required'),
+
+  /** Optional: Syncra Messaging Gateway URL */
+  messagingGatewayUrl: z.string().url('Gateway URL must be a valid URL').optional(),
+
+  /** Optional: Syncra Messaging Gateway API Key */
+  messagingGatewayApiKey: z.string().optional(),
 }).refine(
   (data) => data.baseUrl.includes('kommo'),
   { message: 'Base URL should be a Kommo domain' }

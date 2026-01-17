@@ -8,10 +8,13 @@ test-macro.ts
 test-mcp.js
 coverage
 .npmrc
-docs/aboutMCP.md
-docs/ROADMAP.md
-docs/STATUS.md
-docs/dev/
+
+# Internal documentation (not for git)
+docs/internal/
+docs/index.md
+docs/REPORT-FOR-BOSS.md
+docs/internal/GATEWAY_INTEGRATION_ANALYSIS.md
+docs/internal/dev/IMPROVEMENT_PLAN_GATEWAY.md
 src/scripts/
 .agent/memory/
 .agent/indexes/

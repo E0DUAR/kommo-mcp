@@ -12,7 +12,7 @@
 Always validate configuration with the schema before using:
 
 ```typescript
-import { kommoConfigSchema, type KommoConfig } from '@syncra/kommo-mcp';
+import { kommoConfigSchema, type KommoConfig } from '@syncraengine/kommo-mcp';
 
 const config: KommoConfig = {
   baseUrl: 'https://your-domain.kommo.com',
@@ -154,7 +154,7 @@ while (true) {
 Use the `normalizePagination` utility for consistent pagination handling:
 
 ```typescript
-import { normalizePagination } from '@syncra/kommo-mcp';
+import { normalizePagination } from '@syncraengine/kommo-mcp';
 
 const pagination = normalizePagination({ page: 1, limit: 50 });
 // Returns normalized page and limit values
@@ -253,7 +253,7 @@ Be aware of Kommo API rate limits. Implement appropriate delays or request throt
 All functions are fully typed. Use TypeScript types for better IDE support and error checking:
 
 ```typescript
-import type { KommoContact, KommoLead } from '@syncra/kommo-mcp';
+import type { KommoContact, KommoLead } from '@syncraengine/kommo-mcp';
 
 function processContact(contact: KommoContact) {
   // Type-safe access to contact properties
@@ -308,9 +308,9 @@ Future versions will provide semantic actions (e.g., `registerNewOpportunity()`)
 
 ## References
 
-- **Setup Guide**: See `docs/SETUP.md`
-- **Known Issues**: See `docs/KNOWN_ISSUES.md`
-- **Current Status**: See `docs/STATUS.md`
+- **Setup Guide**: See `docs/guides/SETUP.md`
+- **Known Issues**: See `docs/reference/KNOWN_ISSUES.md`
+- **Context Template**: See `docs/templates/CONTEXT_TEMPLATE.md`
 - **Kommo API Docs**: https://developers.kommo.com/reference/kommo-api-reference
 
 ---
